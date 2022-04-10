@@ -66,7 +66,7 @@ module TopLevel(
     wire [1:0]      BUS_INTERRUPTS_RAISE;
     wire [1:0]      BUS_INTERRUPTS_ACK;
     
-    wire [2:0]      COLOUR_COUNTER;
+    wire [1:0]      COLOUR_COUNTER;
 
     
     //***********************************************************//
@@ -237,7 +237,10 @@ module TopLevel(
                     .BUS_WE(BUS_WE),
                     
                     // IR Signal
-                    .IR_LED(IR_LED)
+                    .IR_LED(IR_LED),
+
+                    // Colour Selection
+                    .COLOUR_COUNTER(COLOUR_COUNTER)
                     );
                     
                     

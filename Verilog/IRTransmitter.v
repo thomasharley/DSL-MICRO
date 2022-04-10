@@ -31,6 +31,9 @@ module IRTransmitter(
     input [7:0]     BUS_ADDR,
     input           BUS_WE,
 
+    // Colour Selection
+    input [1:0]     COLOUR_COUNTER,
+
     // Peripheral signals
     output          IR_LED
     );
@@ -72,15 +75,15 @@ module IRTransmitter(
     end
 
 
-    // Retrieve Car Select signal
-    reg [1:0] CAR_SELECT = 2'd0;
+    // Retrieve Car Select signal - No Longer Make use of This
+    /* reg [1:0] CAR_SELECT = 2'd0;
     
     always@(posedge CLK) begin
             if(RESET)
                 CAR_SELECT      <= 2'd0;
             else if((BUS_ADDR == IRBaseAddr + 1) & BUS_WE) // If Bus Addr == 0x91
                 CAR_SELECT      <= BUS_DATA[1:0];
-    end
+    end */
 
 
     //******************************************************************//
@@ -98,7 +101,7 @@ module IRTransmitter(
                         .GapSize(25),               // 25
                         .AssertBurstSize(47),       // 47
                         .DeassertBurstSize(22),     // 22
-                        .FrequencyReduction(4)      // 4
+                        .FrequencyReduction(4)      // 1389
                         )
                         Blue_SM(
                         .CLK(RCLK),
@@ -116,7 +119,7 @@ module IRTransmitter(
                         .GapSize(40),               // 40
                         .AssertBurstSize(44),       // 44
                         .DeassertBurstSize(22),     // 22
-                        .FrequencyReduction(4)      // 4
+                        .FrequencyReduction(4)      // 1250
                         )
                         Yellow_SM(
                         .CLK(RCLK),
@@ -133,7 +136,7 @@ module IRTransmitter(
                         .GapSize(40),               // 40
                         .AssertBurstSize(44),       // 44
                         .DeassertBurstSize(22),     // 22
-                        .FrequencyReduction(4)      // 4
+                        .FrequencyReduction(4)      // 1333
                         )
                         Green_SM(
                         .CLK(RCLK),
@@ -150,7 +153,7 @@ module IRTransmitter(
                         .GapSize(24),               // 24
                         .AssertBurstSize(48),       // 48
                         .DeassertBurstSize(24),     // 24
-                        .FrequencyReduction(4)      // 4
+                        .FrequencyReduction(4)      // 1389
                         )
                         Red_SM(
                         .CLK(RCLK),
@@ -166,7 +169,7 @@ module IRTransmitter(
     reg         LED_OUT = 1'b0;
     
     always@(CAR_SELECT or IR_OUT) begin
-        case(CAR_SELECT)
+        case(COLOUR_COUNTER)
             BLUE:       LED_OUT <= IR_OUT[0];
             YELLOW:     LED_OUT <= IR_OUT[1];
             GREEN:      LED_OUT <= IR_OUT[2];

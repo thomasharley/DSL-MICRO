@@ -42,7 +42,7 @@ module MouseTransceiver(
     input               BUS_INTERRUPT_ACK,
     
     // Colour Selection
-    output [2:0]        COLOUR_COUNTER
+    output [1:0]        COLOUR_COUNTER
     
     );
     
@@ -292,7 +292,7 @@ module MouseTransceiver(
     assign MouseNewY = {1'b0,MouseY} - MouseDy; // Had to be inverted for VGA SCREEN
     assign MouseNewZ = {1'b0,MouseZ} + MouseDz; // Adding 2's complement number to normal binary number.
     
-    reg [2:0] ColourCounter = 3'b000;
+    reg [1:0] ColourCounter = 2'b00;
     
     assign COLOUR_COUNTER   = ColourCounter; // Colour Counter for Background
     
@@ -348,12 +348,8 @@ module MouseTransceiver(
                     //**********************************************************//
                     // BONUS FEATURE - Colour Changer for the Background     
                     if(MouseStatusRaw[0] == 1'b1) begin
-                            if(MouseStatus[0] == 1'b0) begin
-                                    if(ColourCounter < 3'b011)
-                                        ColourCounter = ColourCounter + 1;
-                                else
-                                        ColourCounter <= 0;
-                            end
+                            if(MouseStatus[0] == 1'b0)
+                                        ColourCounter <= ColourCounter + 1;
                     end
                                           
             end

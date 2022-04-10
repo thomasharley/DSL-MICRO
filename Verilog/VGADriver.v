@@ -33,7 +33,7 @@ module VGADriver(
     input wire [7:0]    BUS_ADDR,
     
     // Colour Counter for Background
-    input wire [2:0]    COLOUR_COUNTER
+    input wire [1:0]    COLOUR_COUNTER
  
     );
         
@@ -102,14 +102,14 @@ module VGADriver(
     
     // Background Colour Counter - Indicate which car is being controlled  
     always@(posedge CLK) begin
-            if (COLOUR_COUNTER == 3'b000)
+            if (COLOUR_COUNTER == 2'b00)
                 foreground_colour       <= 8'b11001000;   // Blue
-            else if (COLOUR_COUNTER == 3'b001)
-                foreground_colour       <= 8'b00000111;   // Red
-            else if (COLOUR_COUNTER == 3'b010)
-                foreground_colour       <= 8'b00111000;   // Green
-            else if (COLOUR_COUNTER ==3'b011)
+            else if (COLOUR_COUNTER == 2'b01)
                 foreground_colour       <= 8'b11111111;   // Yellow
+            else if (COLOUR_COUNTER == 2'b10)
+                foreground_colour       <= 8'b00111000;   // Green
+            else if (COLOUR_COUNTER == 2'b11)
+                foreground_colour       <= 8'b00000111   // Red
                 
     end
     
